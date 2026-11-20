@@ -5,7 +5,7 @@ answers Vadim gave to the product questions. This document records **what** the
 product is and **what is in and out of V1**. Technical and design decisions come
 later, in separate documents.
 
-Last updated: 2026-11-20
+Last updated: 2026-11-20 (open questions A–H resolved)
 
 ---
 
@@ -46,7 +46,7 @@ Questions asked before planning, with the answers and what they mean for scope.
 | 3 | Ownership | Own product | Own branding, no partner constraints |
 | 4 | Scale | 3 practitioners, 10 clients | Small scale; no scaling work needed in V1 |
 | 5 | Trajectory duration | Custom | Trajectory = start date + end date (or weeks), not fixed packages only |
-| 6 | Billing | In the app: pre-arranged packages and custom ones with custom pricing | New feature versus the concept; see open question A |
+| 6 | Billing | In the app: pre-arranged packages and custom ones with custom pricing | New feature versus the concept; online payment optional (see decision A) |
 | 7 | Onboarding | Always an intake; a questionnaire before sign-up | New feature: intake questionnaire flow precedes account creation |
 | 8 | Client types | V1: athletes who want to get better or stronger. Team: technique analyst, strength trainer, physio | "Fysio" becomes "practitioner" with a role label; rehab-specific wording is secondary |
 | 9 | Practitioner usage | Throughout the day | In-app inbox and badges are central |
@@ -57,14 +57,14 @@ Questions asked before planning, with the answers and what they mean for scope.
 | 14 | Goals authoring | Practitioner input plus templates | Goal and phase templates are a feature |
 | 15 | Sub-goal completion | Practitioner confirms each one | The app may *propose* a sub-goal as reached from logs; nothing ticks automatically |
 | 16 | Client visibility | Never other clients' data; otherwise everything except internal notes | Internal notes and internal reports hidden from client; all else visible |
-| 17 | Chat | Yes; clients can always message; no response-time promises | Chat stays; consultation hours and auto-reply are not needed (see open question C) |
+| 17 | Chat | Yes; clients can always message; no response-time promises | Chat stays; consultation hours shown as information only (decision C) |
 | 18 | Chat after trajectory | Allowed | Chat access is not tied to trajectory status |
-| 19 | Push notifications | Not in V1 | In-app notifications only; see open question B for reminders |
+| 19 | Push notifications | Not in V1 | In-app notifications only; training-day reminders dropped (decision B) |
 | 20 | Several practitioners per client | Sometimes; organisations as the sharding unit | Treatment team per client within an organisation |
 | 21 | Colleague visibility | Only shared clients | A practitioner sees a client only when in that client's treatment team |
 | 22 | Library visibility | All libraries within the organisation | Organisation-wide library; personal "mine" view is a filter |
 | 23 | Practice-system integration | Not relevant | Out of scope |
-| 24 | Client self-booking | No | Out of scope; see open question D for the agenda |
+| 24 | Client self-booking | No | Out of scope; practitioner-managed appointment list instead (decision D) |
 | 25 | Existing videos | None | Library starts empty; exercises without video are the normal case |
 | 26 | Languages | Dutch and English | Interface and content in both languages |
 | 27 | Medical data | Later | Deferred |
@@ -82,7 +82,8 @@ Questions asked before planning, with the answers and what they mean for scope.
 - Organisation with practitioners (role label: physio, strength trainer, technique analyst) and clients.
 - Intake questionnaire that a prospective client fills in before an account is created.
 - Trajectories per client with a custom duration and a package or custom price.
-- Billing configuration: pre-arranged packages and custom pricing.
+- Billing configuration: pre-arranged packages and custom pricing; record what is owed and paid; optional online payment per trajectory.
+- Permission model with roles, with a single "practitioner" role in V1.
 
 **Practitioner side**
 - Client list with filters: all, open items, needs attention; badges that stay until marked handled.
@@ -94,7 +95,8 @@ Questions asked before planning, with the answers and what they mean for scope.
 - Chat per client with quick replies and an inactivity reminder message.
 - Treatment team per client; internal notes and internal reports hidden from the client.
 - Exercise library: organisation-wide, with "mine", favourites, copy-and-adapt, optional video, both languages.
-- Settings: inactivity threshold.
+- Appointments: created by the practitioner, shown to the client (read only).
+- Settings: inactivity threshold; online hours shown to clients as information only (no auto-reply).
 
 **Client side**
 - Today screen: today's training in at most two taps.
@@ -103,32 +105,35 @@ Questions asked before planning, with the answers and what they mean for scope.
 - Chat with the treatment team.
 - Progress per exercise and toward the current phase; trajectory status (week x of y).
 - Readable session reports; language choice.
+- After the trajectory ends: read-only access to own history; chat stays available.
 
 ### Out of scope for V1
 - Client self-planning of extra trainings, swapping exercises, changing weights.
 - Client self-booking of appointments.
 - Practice-system integration.
-- Push notifications.
-- Consultation hours with auto-reply (to confirm, see C).
+- Push notifications and training-day reminders.
+- Auto-reply outside online hours.
+- English exercise content and goal templates (interface is bilingual, content Dutch first).
+- Role-specific permissions (model prepared, one role used).
 - Multi-organisation administration and selling to other practices.
 - Data retention and deletion policies (to be defined later).
 - Rehab-specific goal wording and templates.
 
-## 5. Open questions from the answers
+## 5. Decisions on the follow-up questions
 
-These came out of the answers and need a decision before the implementation plan is final.
-
-- **A. Billing depth.** Does "billing in the app" mean recording what a client owes and has paid, or also collecting payment online? If online, which provider (?) and are recurring charges needed?
-- **B. Reminders without push.** Client reminders on training days (concept US-27/28) assumed push notifications. Without push: drop reminders for V1, or send email (?)
-- **C. Consultation hours.** With "no promises on response times", should the practitioner's online hours and the auto-reply be dropped entirely, or kept as information only?
-- **D. Agenda.** With no practice system and no client booking, is an agenda still needed? Proposal: a simple list of appointments created by the practitioner that the client sees in their agenda.
-- **E. Intake questionnaire.** Who defines the questions, is one fixed questionnaire enough for V1, and does the team review it before creating the account?
-- **F. English content.** Interface in both languages is clear. Do exercise instructions and goal templates also need both languages from day one, or Dutch first?
-- **G. Practitioner roles.** Do the three roles need different permissions, or is the role only a label?
-- **H. Trajectory end.** What does the client see after the trajectory ends: read-only history, a renewal prompt, nothing?
+| # | Question | Decision |
+|---|----------|----------|
+| A | Billing depth | Record owed and paid amounts in the app; online payment collection is included as an option, not mandatory per trajectory |
+| B | Reminders without push | Dropped for V1 |
+| C | Consultation hours | Kept as information only; no auto-reply |
+| D | Agenda | Simple list of appointments created by the practitioner, visible read-only in the client's agenda |
+| E | Intake questionnaire | Questions defined later; mostly about injuries and risks to be aware of. One configurable questionnaire is enough |
+| F | English content | Not in V1; interface bilingual, exercise and goal content Dutch first |
+| G | Practitioner roles | Permission model prepared for several roles; V1 uses one practitioner role |
+| H | Trajectory end | Client keeps read-only access to their history |
 
 ## 6. Next steps
 
-1. Decide the open questions A to H.
-2. Write the implementation plan: platform choice, architecture, data model, milestones.
-3. Define the pilot with internal clients and the feedback rounds.
+1. Write the implementation plan: platform choice, architecture, data model, milestones.
+2. Define the pilot with internal clients and the feedback rounds.
+3. Define the intake questionnaire content (can run in parallel with the build).
